@@ -1,11 +1,23 @@
-<!-- Mermaid.js for diagrams -->
-<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js"></script>
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
-    mermaid.initialize({
-      startOnLoad: true,
-      theme: 'default',
-      securityLevel: 'loose'
+  document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll(".language-mermaid").forEach(function (el) {
+      var codeEl = el.querySelector("code") || el;
+      var graphDefinition = codeEl.textContent;
+
+      var container = document.createElement("div");
+      container.className = "mermaid";
+      container.textContent = graphDefinition;
+
+      var wrap = document.createElement("div");
+      wrap.style.overflowX = "auto";
+      wrap.appendChild(container);
+
+      var target = el.closest(".highlighter-rouge") || el;
+      target.replaceWith(wrap);
     });
+
+    mermaid.initialize({ startOnLoad: false, theme: "default" });
+    mermaid.run();
   });
 </script>
