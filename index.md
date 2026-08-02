@@ -50,59 +50,7 @@ The system implements the following functional requirements, grounded in the cod
 
 The system follows a layered, ports-and-adapters architecture. Domain models and policy are independent of HTTP and providers. Application ports isolate decision and retrieval implementations. Infrastructure supplies the rule-based engine, local retrieval, and NVIDIA NIM client. FastAPI supplies transport. The React client is a separate browser consumer.
 
-```mermaid
-flowchart TB
-    subgraph Client["Browser Client"]
-        React["React Operations Console<br/>(Vite + TypeScript)"]
-    end
-
-    subgraph API["FastAPI Transport Layer"]
-        CORS["CORS Middleware"]
-        Sec["Security Headers + Request ID"]
-        Val["Pydantic Validation"]
-        RBAC["RBAC (development tokens)"]
-        Routes["API Routes<br/>/scenarios, /decisions, /disposition"]
-    end
-
-    subgraph App["Application Layer"]
-        ScenarioSvc["Scenario Service<br/>(seeded generator)"]
-        Ports["DecisionEngine Port<br/>RetrievalPort"]
-    end
-
-    subgraph Domain["Domain Layer"]
-        Models["Pydantic Models<br/>Scenario, DecisionResult, etc."]
-        Policy["Policy Engine<br/>evaluate_safety_gates<br/>validate_llm_recommendation"]
-    end
-
-    subgraph Infra["Infrastructure Layer"]
-        Rule["RuleBasedDecisionEngine<br/>(deterministic baseline)"]
-        Retrieval["RetrievalEngine<br/>(local FAISS + Markdown)"]
-        NIM["LLMDecisionEngine<br/>(NVIDIA NIM client)"]
-    end
-
-    subgraph Persistence["Persistence Layer"]
-        DB[("SQLite / PostgreSQL<br/>SQLAlchemy + Alembic")]
-        Audit["AuditLog<br/>Decision, Approval, User"]
-    end
-
-    React -->|HTTP JSON| CORS
-    CORS --> Sec
-    Sec --> Val
-    Val --> RBAC
-    RBAC --> Routes
-    Routes --> ScenarioSvc
-    Routes --> Ports
-    Ports --> Rule
-    Ports --> NIM
-    NIM --> Retrieval
-    Retrieval -->|knowledge/*.md| NIM
-    Rule --> Models
-    NIM --> Models
-    Models --> Policy
-    Policy -->|safety findings| Routes
-    Routes -->|persist| DB
-    DB --> Audit
-```
+<img src="assets/architecture_diagram.svg" alt="AegisOps AI System Architecture — layered ports-and-adapters diagram showing Browser Client, FastAPI Transport, Application, Domain, Infrastructure, and Persistence layers" style="max-width: 100%; height: auto; display: block; margin: 2rem auto;">
 
 ### Component Responsibilities
 
