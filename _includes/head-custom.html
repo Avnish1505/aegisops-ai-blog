@@ -1,0 +1,31 @@
+<script type="module">
+  import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs";
+
+  function renderMermaidBlocks() {
+    const candidates = document.querySelectorAll(".language-mermaid");
+
+    candidates.forEach((el) => {
+      const codeEl = el.querySelector("code") || el;
+      const graphDefinition = codeEl.textContent;
+
+      const container = document.createElement("div");
+      container.className = "mermaid";
+      container.textContent = graphDefinition;
+
+      const scrollWrap = document.createElement("div");
+      scrollWrap.style.overflowX = "auto";
+      scrollWrap.appendChild(container);
+
+      const target = el.closest(".highlighter-rouge") || el;
+      target.replaceWith(scrollWrap);
+    });
+
+    mermaid.initialize({ startOnLoad: true, theme: "default" });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", renderMermaidBlocks);
+  } else {
+    renderMermaidBlocks();
+  }
+</script>
