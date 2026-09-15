@@ -1,0 +1,10 @@
+title: AegisOps AI Engineering Blog
+description: Engineering a Human-Supervised Crisis Decision Platform
+theme: minima
+markdown: kramdown
+
+defaults:
+  - scope:
+      path: ""
+    values:
+      layout: aegis
