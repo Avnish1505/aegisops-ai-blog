@@ -3,6 +3,9 @@ description: Engineering a Human-Supervised Crisis Decision Platform
 theme: minima
 markdown: kramdown
 
+plugins:
+  - jekyll-seo-tag
+
 defaults:
   - scope:
       path: ""
